@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Master</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #10152b;
+  color: white;
+}
+.container {
+  max-width: 420px;
+  margin: 50px auto;
+  padding: 25px;
+  background: #1c2445;
+  border-radius: 20px;
+}
+h1 { color: #45e6ff; }
+.letters {
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 8px;
+  margin: 25px 0;
+}
+input {
+  padding: 13px;
+  width: 80%;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  text-align: center;
+}
+button {
+  margin-top: 15px;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  background: #45e6ff;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#result {
+  margin-top: 20px;
+  font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🧩 Word Master</h1>
+  <p>इन अक्षरों से एक सही शब्द बनाओ!</p>
+
+  <div class="letters" id="letters">क म ल</div>
+
+  <input id="answer"
+    type="text"
+    placeholder="अपना शब्द लिखो">
+
+  <br>
+  <button onclick="checkWord()">जवाब चेक करो</button>
+  <button onclick="newGame()">अगला सवाल</button>
+
+  <p id="result"></p>
+  <p>स्कोर: <span id="score">0</span></p>
+</div>
+
+<script>
+const questions = [
+  { letters: "क म ल", answers: ["कमल"] },
+  { letters: "न म न", answers: ["नमन"] },
+  { letters: "ज ल", answers: ["जल"] },
+  { letters: "फ ल", answers: ["फल"] },
+  { letters: "घ र", answers: ["घर"] }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+function showQuestion() {
+  document.getElementById("letters").textContent =
+    questions[current].letters;
+  document.getElementById("answer").value = "";
+  document.getElementById("result").textContent = "";
+  answered = false;
+}
+
+function checkWord() {
+  if (answered) {
+    document.getElementById("result").textContent =
+      "अगला सवाल दबाओ!";
+    return;
+  }
+
+  const answer = document.getElementById("answer")
+    .value.trim().replace(/\s/g, "");
+
+  if (!answer) {
+    document.getElementById("result").textContent =
+      "पहले एक शब्द लिखो!";
+    return;
+  }
+
+  if (questions[current].answers.includes(answer)) {
+    score++;
+    document.getElementById("score").textContent = score;
+    document.getElementById("result").textContent =
+      "🎉 सही जवाब! शाबाश!";
+  } else {
+    document.getElementById("result").textContent =
+      "❌ फिर से कोशिश करो!";
+    return;
+  }
+
+  answered = true;
+}
+
+function newGame() {
+  current = (current + 1) % questions.length;
+  showQuestion();
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
